@@ -6,7 +6,7 @@ const getData = (api) => {
     return fetch(api)
     .then((response) => response.json())
     .then((json) => {
-        llenarDatos(json.results)
+        llenarDatos(json.results), paginacion(json.next,json.previous);
     })
     .catch((error) => {
         console.log("Error", error);
@@ -26,6 +26,17 @@ const llenarDatos = (data) => {
         html += "</div>";
     });
     document.getElementById("datosPersonajes").innerHTML = html;
+};
+
+//Paginacion
+const paginacion = (datanext,dataprevious) => {
+    let prevDisabled = "";
+    let nextDisabled = "";
+  
+    let html = `<li class="page-item ${dataprevious == null?prevDisabled = "disabled":prevDisabled = ""}"><a class="page-link" onclick="getData('${dataprevious}')">Previous</a></li> <li class="page-item ${ datanext == null?nextDisabled = "disabled":nextDisabled = ""}" ><a class="page-link" onclick="getData('${datanext}')">Next</a></li>`;
+   
+  
+    document.getElementById("paginacion").innerHTML = html;
 };
 
 // Se ejecuta la API
